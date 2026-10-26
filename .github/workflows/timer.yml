@@ -1,0 +1,45 @@
+name: timer
+
+on:
+  schedule:
+    # Every 30 minutes, off the top of the hour (GitHub is busiest then).
+    # post.py decides whether an ad is due; most runs post nothing.
+    - cron: "13,43 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: timer
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post the ads that are due
+        run: python3 post.py
+        env:
+          WEBHOOK_GENCHAT: ${{ secrets.WEBHOOK_GENCHAT }}
+          WEBHOOK_MAYHEM: ${{ secrets.WEBHOOK_MAYHEM }}
+          WEBHOOK_LFMAYHEM: ${{ secrets.WEBHOOK_LFMAYHEM }}
+      - name: Remember what was posted
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "state"
+            git pull --rebase
+            git push
+          fi
+      - name: Switch the timer off once every ad has ended
+        if: always()
+        run: if [ -f DONE ]; then gh workflow disable timer.yml; fi
+        env:
+          GH_TOKEN: ${{ github.token }}
