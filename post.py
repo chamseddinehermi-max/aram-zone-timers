@@ -27,7 +27,8 @@ JEOPARDY_AT = 1793386800        # Fri 30 Oct 2026 19:00 UTC = 20:00 CET
 JEOPARDY_SIGNUP = "1562873127946559599"
 CUP_AT = 1794070800             # Sat 7 Nov 2026 17:00 UTC = 18:00 Tunisia
 CUP_CHECKIN = CUP_AT - 15 * 60
-CUP_SIGNUP = ""                 # the cup's sign-up channel; the cup ads wait until it is set
+CUP_SIGNUP = "861952017752129547"      # #tournaments, where Elobby's Register team post lives
+CUP_TEAMMATES = "1561780940345311263"  # #lf-tournament-euw
 
 UA = "DiscordBot (https://github.com/chamseddinehermi-max/aram-zone-timers, 1.0)"
 
@@ -70,14 +71,12 @@ def jeopardy():
 
 
 def cup():
-    if not CUP_SIGNUP:
-        return None
     return {
         "flags": 32768,
         "components": [
-            {"type": 12, "items": [{"media": {"url": "attachment://banner.png"}}]},
+            {"type": 12, "items": [{"media": {"url": "attachment://cup-banner.png"}}]},
             {"type": 17, "accent_color": ORANGE, "components": [
-                text("# Halloween Mayhem Cup\n**ARAM Mayhem** · 3v3 · bring your own team"),
+                text("# Halloween Mayhem Cup\n**ARAM Mayhem** · 3v3 · EUW"),
                 divider(),
                 text(f"### When\n**<t:{CUP_AT}:F>**\n"
                      f"-# Starts <t:{CUP_AT}:R> · check-in opens at <t:{CUP_CHECKIN}:t>"),
@@ -88,20 +87,20 @@ def cup():
                      "- **3rd:** 1 mystery skin each"),
                 divider(),
                 text("### How to sign up\n"
-                     f"Team up with two friends, then sign up your team in <#{CUP_SIGNUP}> "
-                     "before check-in opens. The final is best of 3."),
+                     "Team up with two friends. Your captain presses **Register team** on the "
+                     f"cup's post in <#{CUP_SIGNUP}> before check-in opens.\n"
+                     f"No team yet? Find teammates in <#{CUP_TEAMMATES}>."),
                 signup_button(CUP_SIGNUP),
                 divider(big=False),
                 text("-# Aram Zone Halloween Events"),
             ]}],
-        "attachments": [{"id": 0, "filename": "banner.png"}],
+        "attachments": [{"id": 0, "filename": "cup-banner.png"}],
         "allowed_mentions": {"parse": []},
-    }, [os.path.join(HERE, "assets", "banner.png")]
+    }, [os.path.join(HERE, "assets", "cup-banner.png")]
 
 
 ADS = [
     {"key": "jeopardy-genchat", "webhook": "WEBHOOK_GENCHAT", "ends": JEOPARDY_AT, "build": jeopardy},
-    {"key": "cup-mayhem", "webhook": "WEBHOOK_MAYHEM", "ends": CUP_CHECKIN, "build": cup},
     {"key": "cup-lfmayhem", "webhook": "WEBHOOK_LFMAYHEM", "ends": CUP_CHECKIN, "build": cup},
 ]
 

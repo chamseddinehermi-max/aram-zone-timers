@@ -25,7 +25,6 @@ jobs:
         run: python3 post.py
         env:
           WEBHOOK_GENCHAT: ${{ secrets.WEBHOOK_GENCHAT }}
-          WEBHOOK_MAYHEM: ${{ secrets.WEBHOOK_MAYHEM }}
           WEBHOOK_LFMAYHEM: ${{ secrets.WEBHOOK_LFMAYHEM }}
       - name: Remember what was posted
         if: always()
