@@ -2,9 +2,10 @@ name: timer
 
 on:
   schedule:
-    # Every 30 minutes, off the top of the hour (GitHub is busiest then).
+    # GitHub's schedule is best effort: asked for every 30 minutes, it ran 3 times in 12
+    # hours. Asking every 5 minutes gives it far more chances to wake up on time.
     # post.py decides whether an ad is due; most runs post nothing.
-    - cron: "13,43 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:

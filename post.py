@@ -18,9 +18,9 @@ STATE = os.path.join(HERE, "state.json")
 
 GUILD = "683693724521463839"
 EVERY = 3 * 3600
-# The workflow wakes every 30 minutes and GitHub can start it late, so an ad is due
-# a little before 3 hours have passed. Otherwise it would slip to 3h30 each time.
-EARLY = 10 * 60
+# The workflow asks to wake every 5 minutes and GitHub can start it late, so an ad is
+# due a little before 3 hours have passed. Otherwise it would slip a bit more each time.
+EARLY = 5 * 60
 ORANGE = 0xF28A2E
 
 JEOPARDY_AT = 1793386800        # Fri 30 Oct 2026 19:00 UTC = 20:00 CET
